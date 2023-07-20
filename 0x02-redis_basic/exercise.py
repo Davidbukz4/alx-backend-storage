@@ -8,7 +8,7 @@ from typing import Union, Optional, Callable
 from functools import wraps
 
 
-def count_calls(methods: Callable) -> Callable:
+def count_calls(method: Callable) -> Callable:
     ''' count cache class method '''
     @wraps(method)
     def wrapper(self, *args, **kwargs):
@@ -27,9 +27,9 @@ def call_history(method: Callable) -> Callable:
     @wraps(method)
     def wrapper(self, *args, **kwargs):
         ''' wrapper function '''
-        self.redis.rpush(keyin, str(args))
+        self._redis.rpush(keyin, str(args))
         value = method(self, *args, **kwargs)
-        self._redis.rpush(keyoutput, str(value))
+        self._redis.rpush(keyout, str(value))
         return value
     return wrapper
 
